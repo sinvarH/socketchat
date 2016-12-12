@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">OLChat</string>
+    <string name="ip">ip:</string>
+    <string name="join">join</string>
+    <string name="create">create</string>
+    <string name="port">port:</string>
+    <string name="ip_hint">输入ip地址</string>
+    <string name="port_hint">输入端口号</string>
+    <string name="ip_address">本机ip地址</string>
+    <string name="send">发送</string>
+    <string name="send_content">输入要发送的内容</string>
+</resources>
