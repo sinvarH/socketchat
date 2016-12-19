@@ -96,7 +96,7 @@ public class ChatActivity extends Activity {
                         ChatActivity.this.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                content.append("消息："+ finalStr +"\n");
+                                content.append(finalStr +"\n");
                             }
                         });
                     }
