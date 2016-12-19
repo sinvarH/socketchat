@@ -1,13 +1,18 @@
 package meizhuo.sinvar.olchat.utils;
 
 import android.app.Activity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -54,16 +59,15 @@ public class Server{
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        showView.append("from me:"+sendString+"\n");
+                        showView.append("消息:"+sendString+"\n");
+                        sendContent.setText("");
                     }
                 });
-                Log.e("test","send");
                 Server.this.broadcast(sendString);
             }
         });
 
         try {
-            Log.e("test","into");
             ss = new ServerSocket(port);
             while (true) {
                 //The method blocks until a connection is made.
@@ -130,7 +134,7 @@ public class Server{
             this.preRun();
             while(true){
                 try {
-                    msg="from client: "+this.bufferedReader.readLine();
+                    msg="消息："+this.bufferedReader.readLine();
                     updateUI(activity,showView,msg);
                     //System.out.println(msg);
                     broadcast(this.socketList,msg);
@@ -139,7 +143,7 @@ public class Server{
                         this.bufferedReader.close();
                         this.socket.close();
                         this.socketList.remove(this.socket);
-                        broadcast(this.socketList,"somebody exist....people size :" +socketList.size());
+                        broadcast(this.socketList,"有人退出....现在人数 :" +socketList.size());
                     } catch (IOException e1) {
                         e1.printStackTrace();
                     }

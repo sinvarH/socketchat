@@ -10,9 +10,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -51,7 +49,6 @@ public class ChatActivity extends Activity {
         if (sign.equals("create")){
             initServer();
         }else if (sign.equals("join")){
-            Log.e("fuck","join");
             initClient();
         }
     }
@@ -72,13 +69,12 @@ public class ChatActivity extends Activity {
             @Override
             public void run() {
                 try {
-                    Log.e("fuck","client");
                     socket = new Socket(ip, port);
                     getInput();
                     send.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-//                            getOutput();
+                            getOutput();
                         }
                     });
                 } catch (IOException e) {
@@ -100,7 +96,7 @@ public class ChatActivity extends Activity {
                         ChatActivity.this.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                content.append("form others"+ finalStr +"\n");
+                                content.append("消息："+ finalStr +"\n");
                             }
                         });
                     }
@@ -114,19 +110,17 @@ public class ChatActivity extends Activity {
 
     private void getOutput(){
         try {
-            String sendString = sendContent.getText().toString().trim();
-            InputStream inputStream = new ByteArrayInputStream(sendString.getBytes());
-            BufferedReader line = new BufferedReader(new InputStreamReader(inputStream));
+            final String sendString = sendContent.getText().toString().trim();
+            ChatActivity.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    sendContent.setText("");
+                }
+            });
             out = new PrintWriter(socket.getOutputStream(), true);
-            String str = null;
-            while((str= line.readLine()) != null){
-                out.println(str);
-            }
-            line.close();
+            out.println(sendString);
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            out.close();
         }
 
     }
